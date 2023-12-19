@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - "main"
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-image:
     runs-on: ubuntu-latest
@@ -29,6 +33,7 @@ jobs:
   deploy-image:
     runs-on: ubuntu-latest
     environment: Production
+    needs: build-image
     steps:
       - name: deploying latest build
         uses: appleboy/ssh-action@v1.0.0
