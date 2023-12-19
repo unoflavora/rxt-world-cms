@@ -2,5 +2,5 @@
 /dist
 /node_modules
 /.turbo
-.dockerfile
 .dockerignore
+Dockerfile
