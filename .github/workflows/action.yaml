@@ -4,9 +4,9 @@ on:
     branches:
       - "main"
 jobs:
-  docker:
+  build-image:
     runs-on: ubuntu-latest
-    environment: Deploy
+    environment: Production
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -25,3 +25,17 @@ jobs:
         env:
           DATABASE_URI: ${{ secrets.DATABASE_URI }}
           PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+
+  deploy-image:
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+      - name: deploying latest build
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.EC2_SECRET_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            bash pull.sh
