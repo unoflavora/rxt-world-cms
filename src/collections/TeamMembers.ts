@@ -84,7 +84,6 @@ const TeamMembers: CollectionConfig = {
       type: "upload",
       required: true,
       relationTo: "file",
-      unique: true,
     },
     {
       name: "mat",
